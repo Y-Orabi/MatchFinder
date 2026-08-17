@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="MatchFinder.Domain/MatchFinder.Domain.csproj" />
+  <Project Path="MatchFinder.Infrastructure/MatchFinder.Infrastructure.csproj" />
+  <Project Path="MatchFinder.Web/MatchFinder.Web.csproj" />
+</Solution>

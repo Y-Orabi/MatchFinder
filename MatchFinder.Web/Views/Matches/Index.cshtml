@@ -1,0 +1,60 @@
+﻿@model IEnumerable<MatchFinder.Domain.Entities.Match>
+
+@{
+    ViewData["Title"] = "Active Matches";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>Find Active Sports Matches</h2>
+        </div>
+        <div class="col-md-4 text-end">
+            @if (User.IsInRole("Host") || User.IsInRole("Admin"))
+            {
+                <a asp-action="Create" class="btn btn-primary">Create New Match</a>
+            }
+        </div>
+    </div>
+
+    <!-- Search & Filter Form -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="sport" class="form-control" placeholder="Filter by Sport (e.g., Football)" value="@ViewData["CurrentSport"]" />
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="venue" class="form-control" placeholder="Filter by Venue/City" value="@ViewData["CurrentVenue"]" />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-secondary">Filter</button>
+            <a asp-action="Index" class="btn btn-outline-dark">Reset</a>
+        </div>
+    </form>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        @foreach (var match in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <span class="badge bg-info text-dark mb-2">@match.SportType</span>
+                        <h5 class="card-title">@match.Title</h5>
+                        <p class="card-text text-muted mb-1"><i class="bi bi-geo-alt"></i> @match.Venue</p>
+                        <p class="card-text text-muted mb-2"><i class="bi bi-calendar"></i> @match.MatchDate.ToString("g")</p>
+                        <p class="card-text"><strong>Slots:</strong> @match.CurrentPlayersCount / @match.MaxPlayers</p>
+                        <a asp-action="Details" asp-route-id="@match.Id" class="btn btn-outline-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
